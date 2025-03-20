@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+data:
+  database_host: "mysql-service"
+  database_port: "3306"
+  inventory_db: "inventorydb"
+  shipping_db: "shippingdb"
+  cart_db: "cartdb"
+  user_db: "userdb"
