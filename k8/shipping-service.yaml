@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: shipping-service
-          image: shipping-service:latest
+          image: kbhatt52/shippingservice:latest  # ✅ Correct image reference
           ports:
             - containerPort: 8084
           envFrom:
