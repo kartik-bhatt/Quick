@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: inventory-service
-          image: inventory-service:latest
+          image: kbhatt52/inventoryservice:latest  # ✅ Corrected image reference
           ports:
             - containerPort: 8082
           envFrom:
