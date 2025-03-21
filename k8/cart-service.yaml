@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: cart-service
-          image: cart-service:latest
+          image: kbhatt52/cartservice:latest  # ✅ Corrected image reference
           ports:
             - containerPort: 8083
           envFrom:
@@ -46,4 +46,3 @@ spec:
       port: 8083
       targetPort: 8083
   type: ClusterIP
-
