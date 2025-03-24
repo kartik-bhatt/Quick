@@ -1,28 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: inventory-service
+  name: inventoryservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: inventory-service
+      app: inventoryservice
   template:
     metadata:
       labels:
-        app: inventory-service
+        app: inventoryservice
     spec:
       containers:
-        - name: inventory-service
-          image: kbhatt52/inventoryservice:latest  # ✅ Corrected image reference
-          ports:
-            - containerPort: 8082
-          envFrom:
-            - configMapRef:
-                name: mysql-config
+        - name: inventoryservice
+          image: kbhatt52/inventoryservice:latest
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:mysql://$(database_host):$(database_port)/$(inventory_db)
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: url
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -33,16 +31,17 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: password
+          ports:
+            - containerPort: 8082
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: inventory-service
+  name: inventoryservice
 spec:
   selector:
-    app: inventory-service
+    app: inventoryservice
   ports:
     - protocol: TCP
       port: 8082
       targetPort: 8082
-  type: ClusterIP
