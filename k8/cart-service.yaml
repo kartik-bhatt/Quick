@@ -1,28 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cart-service
+  name: cartservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: cart-service
+      app: cartservice
   template:
     metadata:
       labels:
-        app: cart-service
+        app: cartservice
     spec:
       containers:
-        - name: cart-service
-          image: kbhatt52/cartservice:latest  # ✅ Corrected image reference
-          ports:
-            - containerPort: 8083
-          envFrom:
-            - configMapRef:
-                name: mysql-config
+        - name: cartservice
+          image: kbhatt52/cartservice:latest
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:mysql://$(database_host):$(database_port)/$(cart_db)
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: url
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -33,16 +31,17 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: password
+          ports:
+            - containerPort: 8084
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: cart-service
+  name: cartservice
 spec:
   selector:
-    app: cart-service
+    app: cartservice
   ports:
     - protocol: TCP
-      port: 8083
-      targetPort: 8083
-  type: ClusterIP
+      port: 8084
+      targetPort: 8084
