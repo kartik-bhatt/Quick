@@ -1,28 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shipping-service
+  name: shippingservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: shipping-service
+      app: shippingservice
   template:
     metadata:
       labels:
-        app: shipping-service
+        app: shippingservice
     spec:
       containers:
-        - name: shipping-service
-          image: kbhatt52/shippingservice:latest  # ✅ Correct image reference
-          ports:
-            - containerPort: 8084
-          envFrom:
-            - configMapRef:
-                name: mysql-config
+        - name: shippingservice
+          image: kbhatt52/shippingservice:latest
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:mysql://$(database_host):$(database_port)/$(shipping_db)
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-config
+                  key: url
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -33,16 +31,17 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: password
+          ports:
+            - containerPort: 8083
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: shipping-service
+  name: shippingservice
 spec:
   selector:
-    app: shipping-service
+    app: shippingservice
   ports:
     - protocol: TCP
-      port: 8084
-      targetPort: 8084
-  type: ClusterIP
+      port: 8083
+      targetPort: 8083
