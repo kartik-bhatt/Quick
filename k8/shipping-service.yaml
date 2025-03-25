@@ -15,12 +15,11 @@ spec:
       containers:
         - name: shippingservice
           image: kbhatt52/shippingservice:latest
+          ports:
+            - containerPort: 8083
           env:
             - name: SPRING_DATASOURCE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: url
+              value: jdbc:mysql://mysql:3306/ShippingDB
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -31,8 +30,8 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: password
-          ports:
-            - containerPort: 8083
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://serviceregistry:8761/eureka/
 ---
 apiVersion: v1
 kind: Service
@@ -42,6 +41,3 @@ spec:
   selector:
     app: shippingservice
   ports:
-    - protocol: TCP
-      port: 8083
-      targetPort: 8083
