@@ -15,12 +15,11 @@ spec:
       containers:
         - name: cartservice
           image: kbhatt52/cartservice:latest
+          ports:
+            - containerPort: 8084
           env:
             - name: SPRING_DATASOURCE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: mysql-config
-                  key: url
+              value: jdbc:mysql://mysql:3306/CartDB
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -31,8 +30,8 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: password
-          ports:
-            - containerPort: 8084
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://serviceregistry:8761/eureka/
 ---
 apiVersion: v1
 kind: Service
