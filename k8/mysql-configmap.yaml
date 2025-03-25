@@ -3,5 +3,7 @@ kind: ConfigMap
 metadata:
   name: mysql-config
 data:
-  database: mydatabase
-  url: jdbc:mysql://mysql:3306/mydatabase
+  user_database: UserDB
+  cart_database: CartDB
+  inventory_database: InventoryDB
+  shipping_database: ShippingDB
