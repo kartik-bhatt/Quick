@@ -1,20 +1,13 @@
 server:
-  port: 8084
-
+  port: 8083
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/ShService
+    url: jdbc:mysql://mysql:3306/ShippingDB
     username: root
     password: Root@1234
-    driver-class-name : com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-#  jpa:
-#    hibernate:
-#      ddl-auto: update
-#    show-sql: true
-#    properties.hibernate:
-#      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
   jpa:
     properties:
       hibernate:
@@ -22,16 +15,12 @@ spring:
     hibernate:
       ddl-auto: update
 
-
-  application:
-    name: ShippingService
-
-
 eureka:
   client:
     service-url:
       defaultZone: http://serviceregistry:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
+
   instance:
-    prefer-ip-address: true
+    hostname: shippingservice
