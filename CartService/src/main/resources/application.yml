@@ -1,23 +1,19 @@
 server:
-  port: 8083
-
+  port: 8084
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/CartService
+    url: jdbc:mysql://mysql:3306/CartDB
     username: root
     password: Root@1234
-    driver-class-name : com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-jpa:
-  properties:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
-      dialect: org.hibernate.dialect.MySQLDialect
-  hibernate:
-    ddl-auto: update
-
-  application:
-    name: CARTSERVICE
+      ddl-auto: update
 
 eureka:
   client:
@@ -25,5 +21,6 @@ eureka:
       defaultZone: http://serviceregistry:8761/eureka/
     register-with-eureka: true
     fetch-registry: true
+
   instance:
-    prefer-ip-address: true
+    hostname: cartservice
